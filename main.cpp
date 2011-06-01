@@ -18,20 +18,13 @@ bool isoperator(char output)
     case '-' :
     case '*' :
     case '/' :
-    case '%' :
     case '^' :
-    case ',' :
-    case '!' :
         return true;
     default:
         return false;
     }
 }
 
-bool isfunction(char c) //using only one char length function names for now
-{
-    return false;
-}
 
 int preced(char op)
 {
@@ -43,14 +36,10 @@ int preced(char op)
 
     case '*' :
     case '/' :
-    case '%' :
         return 3;
 
     case '^' :
         return 4;
-
-    case '!' :
-        return 5;
 
     case '(' :
     case ')' :
@@ -64,7 +53,6 @@ bool assoc(char op)
     switch(op)
     {
     case '^' :
-    case '!' :
         return true;
     default:
         return false;
@@ -77,13 +65,10 @@ int op_argc(char op)
     {
     case '*':
     case '/':
-    case '%':
     case '+':
     case '-':
     case '^':
         return 2;
-    case '!':
-        return 1;
     }
     return 0;
 }
@@ -125,16 +110,8 @@ double evaulate(vector <double> v, string s)
         return v[0]*v[1];
     case '/':
         return v[1]/v[0];
-    case '%':
-        return int(v[1]) % int(v[0]);
     case '^':
         return pow(v[1],v[0]);
-    case '!':
-        int n = int(v[0]);
-        for(unsigned int i = int(v[0])-1; i>1;i--)
-            n*=i;
-
-        return n;
     }
 
     return 0;
@@ -145,9 +122,8 @@ int main()
     bool bad = false;
     bool lpar = false;
     deque <string> rpn;
-    stack <char> opStack;
+    stack <string> opStack;
     string input;
-    string temp;
     getline(cin,input);
     deque <string> d = tokenize(input);
 
@@ -159,36 +135,34 @@ int main()
         {
             while(!opStack.empty())
             {
-                if(isoperator(opStack.top()) &&
-                        ((!assoc(d.front()[0]) && preced(d.front()[0])<=preced(opStack.top())) ||
-                         (assoc(d.front()[0]) && preced(d.front()[0])<preced(opStack.top()))))
+                if(isoperator(opStack.top()[0]) &&
+                        ((!assoc(d.front()[0]) && preced(d.front()[0])<=preced(opStack.top()[0])) ||
+                         (assoc(d.front()[0]) && preced(d.front()[0])<preced(opStack.top()[0]))))
                 {
-                    temp = opStack.top();
-                    rpn.push_back(temp);
+                    rpn.push_back(opStack.top());
                     opStack.pop();
                 }
                 else
                     break;
             }
 
-            opStack.push(d.front()[0]);
+            opStack.push(d.front());
         }
 
         else if(d.front() == "(")
-            opStack.push(d.front()[0]);
+            opStack.push(d.front());
 
         else if(d.front() == ")")
         {
             lpar = false;
             while(!opStack.empty())
             {
-                if(opStack.top() == '(')
+                if(opStack.top() == "(")
                 {
                     lpar = true;
                     break;
                 }
-                temp = opStack.top();
-                rpn.push_back(temp);
+                rpn.push_back(opStack.top());
                 opStack.pop();
             }
 
@@ -197,42 +171,11 @@ int main()
 
             if(!opStack.empty())
                 opStack.pop();
-
-            if(!opStack.empty())
-            {
-                if(isfunction(opStack.top()))
-                {
-                    temp = opStack.top();
-                    rpn.push_back(temp);
-                    opStack.pop();
-                }
-            }
-        }
-
-        else if(d.front() == ",")
-        {
-            lpar = false;
-            while(!opStack.empty())
-            {
-                if(opStack.top() == '(')
-                {
-                    lpar = true;
-                    break;
-                }
-
-                temp = opStack.top();
-                rpn.push_back(temp);
-                opStack.pop();
-            }
-
-            if(!lpar)
-                bad = true;
         }
 
         else
         {
-            temp = d.front();
-            rpn.push_back(temp);
+            rpn.push_back(d.front());
         }
 
         if(bad)
@@ -244,14 +187,13 @@ int main()
     while (!opStack.empty() && !bad)
     {
 
-        if(opStack.top() == '(' || opStack.top() == ')')
+        if(opStack.top() == "(" || opStack.top() == ")")
         {
             bad=true;
             break;
         }
 
-        temp = opStack.top();
-        rpn.push_back(temp);
+        rpn.push_back(opStack.top());
         opStack.pop();
     }
 
@@ -263,7 +205,7 @@ int main()
     int t;
     while(!rpn.empty())
     {
-        if(isoperator(rpn.front()[0]) || isfunction(rpn.front()[0]))
+        if(isoperator(rpn.front()[0]))
         {
             if(valStack.size()<op_argc(rpn.front()[0]))
             {
