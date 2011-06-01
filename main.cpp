@@ -129,6 +129,12 @@ double evaulate(vector <double> v, string s)
         return int(v[1]) % int(v[0]);
     case '^':
         return pow(v[1],v[0]);
+    case '!':
+        int n = int(v[0]);
+        for(unsigned int i = int(v[0])-1; i>1;i--)
+            n*=i;
+
+        return n;
     }
 
     return 0;
