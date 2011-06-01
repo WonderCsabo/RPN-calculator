@@ -59,20 +59,6 @@ bool assoc(char op)
     }
 }
 
-int op_argc(char op)
-{
-    switch(op)
-    {
-    case '*':
-    case '/':
-    case '+':
-    case '-':
-    case '^':
-        return 2;
-    }
-    return 0;
-}
-
 deque <string> tokenize(string s)
 {
     deque <string> d;
@@ -207,16 +193,15 @@ int main()
     {
         if(isoperator(rpn.front()[0]))
         {
-            if(valStack.size()<op_argc(rpn.front()[0]))
+            if(valStack.size()<2)
             {
                 bad = true;
                 break;
             }
             else
             {
-                int n = valStack.size();
                 tempv = new vector <double>;
-                while(n-valStack.size()<op_argc(rpn.front()[0]))
+                for(unsigned int i=0;i<2;i++)
                 {
                     tempv->push_back(valStack.top());
                     valStack.pop();
