@@ -2,11 +2,12 @@
 
 #include <iostream>
 #include <stack>
+#include <deque>
 #include <string>
 #include <vector>
 using namespace std;
 
-bool isoperand(char output)
+bool isoperator(char output)
 {
     switch(output)
     {
@@ -17,15 +18,16 @@ bool isoperand(char output)
     case '%' :
     case '^' :
     case ',' :
+    case '!' :
         return true;
     default:
         return false;
     }
 }
 
-int pr(char operand)
+int preced(char op)
 {
-    switch(operand)
+    switch(op)
     {
     case '+' :
     case '-' :
@@ -39,6 +41,9 @@ int pr(char operand)
     case '^' :
         return 4;
 
+    case '!' :
+        return 5;
+
     case '(' :
     case ')' :
         return 1;
@@ -46,135 +51,137 @@ int pr(char operand)
     return 0;
 }
 
-bool lr(char operand)
+bool assoc(char op)
 {
-    switch(operand)
+    switch(op)
     {
-    case '^' :
+    case '^' : case '!' :
         return true;
     default:
         return false;
     }
 }
 
+int op_argc(char op)
+{
+    switch(op)  {
+        case '*': case '/': case '%': case '+': case '-': case '^':
+            return 2;
+        case '!':
+            return 1;
+    }
+    return 0;
+}
+
+deque <string> tokenize(string s)
+{
+    deque <string> d;
+    string temp;
+
+    for(unsigned int i=0; i<s.size(); i++)
+    {
+        if(!isdigit(s[i]) || s[i] != '.')
+        {
+            if(temp.size()>0)
+                d.push_back(temp);
+
+            temp=s[i];
+            d.push_back(temp);
+            temp="";
+        }
+        else
+            temp+=s[i];
+
+    }
+    if(isdigit(s[s.size()-1]))
+        d.push_back(temp);
+
+    return d;
+}
+
 int main()
 {
-    bool bad=false;
+    bool bad = false;
+    bool lpar = false;
 
-    stack <char> charStack;
+    stack <char> opStack;
     string queuestr;
     string input;
     getline(cin,input);
-    int pr1=0;
-    int lr1=0;
-    int pr2=0;
+    deque <string> d = tokenize(input);
 
-    while(!bad)
+    while(d.size()>0)
     {
-
-        for(unsigned int i=0; i<input.length(); ++i)
+        cout<<d.front()<<endl;
+        if(isoperator(d.front()[0]))
         {
-            switch(input[i])
-            {
-            case '+':
-            case '-':
-            case '*':
-            case '/':
-            case '%':
-            case '^':
-
-
-                if(!charStack.empty())
+            while(opStack.size()>0)
                 {
-                    pr1=pr(input[i]);
-                    lr1=lr(input[i]);
-                    pr2=pr(charStack.top());
-                }
-
-                while(!charStack.empty())
-                {
-                    if((lr1 && pr1<pr2) || (!lr1 && pr1<=pr2))
+                    if(isoperator(opStack.top()) &&
+                       ((!assoc(d.front()[0]) && preced(d.front()[0])<=preced(opStack.top())) ||
+                        (assoc(d.front()[0]) && preced(d.front()[0])<preced(opStack.top()))))
                     {
-                        queuestr+=charStack.top();
-                        queuestr+='_';
-                        charStack.pop();
+                        queuestr+=opStack.top();
+                        opStack.pop();
                     }
                     else
                         break;
                 }
-                charStack.push(input[i]);
-                break;
 
-            case '(':
-                charStack.push(input[i]);
-                break;
+            opStack.push(d.front()[0]);
+        }
 
-            case ')':
+        else if(d.front() == "(")
+            opStack.push(d.front()[0]);
 
-                if(!charStack.empty())
+        else if(d.front() == ")")
+        {
+            lpar = false;
+            while(opStack.size()>0)
+            {
+                if(opStack.top() == '(')
                 {
-                    while(charStack.top() != '(')
-                    {
-                        queuestr+= charStack.top();
-                        queuestr+='_';
-                        charStack.pop();
-                        if(charStack.empty())
-                        {
-                            bad=true;
-                            break;
-                        }
-                    }
-
-                    if(!charStack.empty())
-                        charStack.pop();
+                    lpar = true;
+                    break;
                 }
-                else
-                    bad=true;
-                break;
-
-            default:
-                if(isdigit(input[i]) || input[i]=='.' || input[i]==',')
-                {
-                    if(input.length()>i+1)
-                    {
-                        if(!isdigit(input[i+1]))
-                        {
-                            queuestr+= input[i];
-                            queuestr+='_';
-
-                        }
-                        else
-                            queuestr+= input[i];
-                    }
-                    else
-                        queuestr+= input[i];
-                }
-                else
-                    bad=true;
-
+                queuestr+= opStack.top();
+                opStack.pop();
             }
 
+            if(!lpar)
+                bad = true;
+
+            opStack.pop();
         }
-        break;
+
+        else
+            queuestr+= d.front();
+
+        if(bad)
+            break;
+
+        d.pop_front();
+
     }
 
-    while (!charStack.empty() && bad==false)
+    while (!opStack.empty() && !bad)
     {
 
-        if(charStack.top() == '(' || charStack.top() == ')')
-            bad=true;
-        else
+        if(opStack.top() == '(' || opStack.top() == ')')
         {
-            queuestr+='_';
-            queuestr+=charStack.top();
-            charStack.pop();
+            bad=true;
+            break;
         }
+
+        queuestr+=opStack.top();
+        opStack.pop();
     }
+
 
     if(bad)
         cout<<"hibas kifejezes";
     else
-        cout<<queuestr;
+        cout<<"rpn "<<queuestr;
 
 
     return 0;
