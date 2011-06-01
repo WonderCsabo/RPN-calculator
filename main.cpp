@@ -105,9 +105,9 @@ deque <string> tokenize(string s)
             temp.clear();
         }
         else
-            temp.append(1, s[i]);
+            temp+=s[i];
     }
-    if(isdigit(s[s.size()-1]) && temp!="")
+    if(isdigit(s[s.size()-1]) && !temp.empty())
         d.push_back(temp);
 
     return d;
