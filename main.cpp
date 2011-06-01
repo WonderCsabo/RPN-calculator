@@ -25,6 +25,11 @@ bool isoperator(char output)
     }
 }
 
+bool isfunction(char c) //using only one char length function names for now
+{
+    return false;
+}
+
 int preced(char op)
 {
     switch(op)
@@ -55,7 +60,8 @@ bool assoc(char op)
 {
     switch(op)
     {
-    case '^' : case '!' :
+    case '^' :
+    case '!' :
         return true;
     default:
         return false;
@@ -64,11 +70,17 @@ bool assoc(char op)
 
 int op_argc(char op)
 {
-    switch(op)  {
-        case '*': case '/': case '%': case '+': case '-': case '^':
-            return 2;
-        case '!':
-            return 1;
+    switch(op)
+    {
+    case '*':
+    case '/':
+    case '%':
+    case '+':
+    case '-':
+    case '^':
+        return 2;
+    case '!':
+        return 1;
     }
     return 0;
 }
@@ -82,7 +94,7 @@ deque <string> tokenize(string s)
     {
         if(!isdigit(s[i]) || s[i] != '.')
         {
-            if(temp.size()>0)
+            if(!temp.empty())
                 d.push_back(temp);
 
             temp=s[i];
@@ -110,23 +122,23 @@ int main()
     getline(cin,input);
     deque <string> d = tokenize(input);
 
-    while(d.size()>0)
+    while(!d.empty())
     {
         cout<<d.front()<<endl;
         if(isoperator(d.front()[0]))
         {
-            while(opStack.size()>0)
+            while(!opStack.empty())
+            {
+                if(isoperator(opStack.top()) &&
+                        ((!assoc(d.front()[0]) && preced(d.front()[0])<=preced(opStack.top())) ||
+                         (assoc(d.front()[0]) && preced(d.front()[0])<preced(opStack.top()))))
                 {
-                    if(isoperator(opStack.top()) &&
-                       ((!assoc(d.front()[0]) && preced(d.front()[0])<=preced(opStack.top())) ||
-                        (assoc(d.front()[0]) && preced(d.front()[0])<preced(opStack.top()))))
-                    {
-                        queuestr+=opStack.top();
-                        opStack.pop();
-                    }
-                    else
-                        break;
+                    queuestr+=opStack.top();
+                    opStack.pop();
                 }
+                else
+                    break;
+            }
 
             opStack.push(d.front()[0]);
         }
@@ -137,7 +149,7 @@ int main()
         else if(d.front() == ")")
         {
             lpar = false;
-            while(opStack.size()>0)
+            while(!opStack.empty())
             {
                 if(opStack.top() == '(')
                 {
@@ -151,8 +163,39 @@ int main()
             if(!lpar)
                 bad = true;
 
-            opStack.pop();
+            if(!opStack.empty())
+                opStack.pop();
+
+            if(!opStack.empty())
+            {
+                if(isfunction(opStack.top()))
+                {
+                    queuestr+= opStack.top();
+                    opStack.pop();
+                }
+            }
         }
+
+        else if(d.front() == ",")
+        {
+            lpar = false;
+            while(!opStack.empty())
+            {
+                if(opStack.top() == '(')
+                {
+                    lpar = true;
+                    break;
+                }
+
+                queuestr+=opStack.top();
+                opStack.pop();
+            }
+
+            if(!lpar)
+                bad = true;
+        }
+        else if(isfunction(d.front()[0]))
+            queuestr+= d.front();
 
         else
             queuestr+= d.front();
