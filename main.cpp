@@ -1,10 +1,13 @@
-/** The core of the calculator, it converts an infix mathematical expression to RPN. **/
+/** The core of the calculator, it converts an infix mathematical expression to RPN, than evaulates the result. **/
 
 #include <iostream>
 #include <stack>
 #include <deque>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <sstream>
+#include <cmath>
 using namespace std;
 
 bool isoperator(char output)
@@ -92,39 +95,60 @@ deque <string> tokenize(string s)
 
     for(unsigned int i=0; i<s.size(); i++)
     {
-        if(!isdigit(s[i]) || s[i] != '.')
+        if(!isdigit(s[i]) && s[i] != '.')
         {
             if(!temp.empty())
                 d.push_back(temp);
 
             temp=s[i];
             d.push_back(temp);
-            temp="";
+            temp.clear();
         }
         else
-            temp+=s[i];
-
+            temp.append(1, s[i]);
     }
-    if(isdigit(s[s.size()-1]))
+    if(isdigit(s[s.size()-1]) && temp!="")
         d.push_back(temp);
 
     return d;
+}
+
+double evaulate(vector <double> v, string s)
+{
+    switch(s[0])
+    {
+    case '+':
+        return v[0]+v[1];
+    case '-':
+        return v[1]-v[0];
+    case '*':
+        return v[0]*v[1];
+    case '/':
+        return v[1]/v[0];
+    case '%':
+        return int(v[1]) % int(v[0]);
+    case '^':
+        return pow(v[1],v[0]);
+    }
+
+    return 0;
 }
 
 int main()
 {
     bool bad = false;
     bool lpar = false;
-
+    deque <string> rpn;
     stack <char> opStack;
-    string queuestr;
     string input;
+    string temp;
     getline(cin,input);
     deque <string> d = tokenize(input);
 
+    //converting to RPN
+
     while(!d.empty())
     {
-        cout<<d.front()<<endl;
         if(isoperator(d.front()[0]))
         {
             while(!opStack.empty())
@@ -133,7 +157,8 @@ int main()
                         ((!assoc(d.front()[0]) && preced(d.front()[0])<=preced(opStack.top())) ||
                          (assoc(d.front()[0]) && preced(d.front()[0])<preced(opStack.top()))))
                 {
-                    queuestr+=opStack.top();
+                    temp = opStack.top();
+                    rpn.push_back(temp);
                     opStack.pop();
                 }
                 else
@@ -156,7 +181,8 @@ int main()
                     lpar = true;
                     break;
                 }
-                queuestr+= opStack.top();
+                temp = opStack.top();
+                rpn.push_back(temp);
                 opStack.pop();
             }
 
@@ -170,7 +196,8 @@ int main()
             {
                 if(isfunction(opStack.top()))
                 {
-                    queuestr+= opStack.top();
+                    temp = opStack.top();
+                    rpn.push_back(temp);
                     opStack.pop();
                 }
             }
@@ -187,24 +214,25 @@ int main()
                     break;
                 }
 
-                queuestr+=opStack.top();
+                temp = opStack.top();
+                rpn.push_back(temp);
                 opStack.pop();
             }
 
             if(!lpar)
                 bad = true;
         }
-        else if(isfunction(d.front()[0]))
-            queuestr+= d.front();
 
         else
-            queuestr+= d.front();
+        {
+            temp = d.front();
+            rpn.push_back(temp);
+        }
 
         if(bad)
             break;
 
         d.pop_front();
-
     }
 
     while (!opStack.empty() && !bad)
@@ -216,15 +244,60 @@ int main()
             break;
         }
 
-        queuestr+=opStack.top();
+        temp = opStack.top();
+        rpn.push_back(temp);
         opStack.pop();
     }
 
+    //evaluating the result
+
+    stack <double> valStack;
+    vector <double> *tempv;
+    stringstream *s;
+    int t;
+    while(!rpn.empty())
+    {
+        if(isoperator(rpn.front()[0]) || isfunction(rpn.front()[0]))
+        {
+            if(valStack.size()<op_argc(rpn.front()[0]))
+            {
+                bad = true;
+                break;
+            }
+            else
+            {
+                int n = valStack.size();
+                tempv = new vector <double>;
+                while(n-valStack.size()<op_argc(rpn.front()[0]))
+                {
+                    tempv->push_back(valStack.top());
+                    valStack.pop();
+                }
+
+                valStack.push(evaulate(*tempv, rpn.front()));
+                delete tempv;
+            }
+
+        }
+        else
+        {
+            s = new stringstream;
+            *s<<rpn.front();
+            *s>>t;
+            delete s;
+            valStack.push(t);
+        }
+
+        rpn.pop_front();
+    }
+
+    if(valStack.size() > 1 || valStack.empty())
+        bad = true;
 
     if(bad)
         cout<<"hibas kifejezes";
     else
-        cout<<"rpn "<<queuestr;
+        cout<<"eredmeny: "<<valStack.top();
 
 
     return 0;
