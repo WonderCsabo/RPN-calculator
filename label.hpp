@@ -4,13 +4,13 @@
 #include "widget.hpp"
 #include <string>
 
-class Label: public Widget // címke vezérlõje
+class Label: public Widget // label controller
 {
 public:
     Label(int px, int py, std::string text);
     void Show() const;
-    void SetText(std::string text); // szöveg beállítása
-    std::string Text() const { return labelText; }; // szöveg lekérdezése
+    void SetText(std::string text); // set the text
+    std::string Text() const { return labelText; }; // get the text
 protected:
     std::string labelText;
 };

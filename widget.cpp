@@ -6,7 +6,7 @@ Widget::Widget(int px, int py, int sx, int sy, bool focus)
 
 void Widget::HandleEvent(genv::event ev)
 {
-    // nincs eseménykezelés
+    // no event handling here
 }
 bool Widget::MouseOver(int x, int y) const
 {

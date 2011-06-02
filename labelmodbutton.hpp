@@ -4,21 +4,21 @@
 #include "button.hpp"
 #include "label.hpp"
 
-class LabelModButton : public Button // címkefelirat módosító gomb
+class LabelModButton : public Button // label modifier button
 {
 public:
     LabelModButton(int px, int py, int sx, int sy, std::string text, bool focus = false)
-     : Button(px, py, sx, sy, text, focus) // megkapja a módosítandó címkét is
+     : Button(px, py, sx, sy, text, focus) // gets the label wich should be modified
     {
         targetLabel = NULL;
     }
-    void SetLabel(Label* label) { targetLabel = label; } // címke lekérdezése
-    Label* GetLabel() { return targetLabel; } // címke beállítása
+    void SetLabel(Label* label) { targetLabel = label; } // get the label
+    Label* GetLabel() { return targetLabel; } // setting the label
 protected:
-    void Action() // módosítás akciója
+    void Action() // modifyng action
     {
-        if (targetLabel) // ha a címke mutatója nem nulla
-            targetLabel->SetText("HEHE"); // módosítás
+        if (targetLabel) // if the pointer of the label is not null
+            targetLabel->SetText("HEHE"); // modify
     }
 
     Label *targetLabel;

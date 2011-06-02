@@ -20,13 +20,13 @@ void Application::AddWidget(Widget *w)
 void Application::Run()
 {
    gout.open(sizeX, sizeY);
-    while (gin && !isExiting) // amíg fogadhat eseményeket és nincs kilépési módban
+    while (gin && !isExiting) // while it can accept events and not in exiting state
     {
         event ev; gin >> ev;
 
-        if ((ev.keycode == key_tab || ev.keycode == key_right) && widgets.size() > 0) // tab hatására változik a fókusz
+        if ((ev.keycode == key_tab || ev.keycode == key_right) && widgets.size() > 0) // focus is chaned with tab or key_right
             focus++;
-        if(widgets.size() > 0 && ev.keycode == key_left)
+        if(widgets.size() > 0 && ev.keycode == key_left) // focus is chaned with key_left
             focus--;
 
         if(focus>2)
@@ -38,17 +38,17 @@ void Application::Run()
             widgets[i]->SetFocus(focus == i);
 
         for (unsigned int i = 0; i < widgets.size(); i++)
-        { // vectorban található vezérlõk
-            widgets[i]->HandleEvent(ev); // eseménykezelés
+        { // controllers in the vector
+            widgets[i]->HandleEvent(ev); //event handling
         }
 
         gout << move_to(0, 0) << color(0,0,0) << box(sizeX, sizeY);
         for (unsigned int i = 0; i < widgets.size(); i++)
-            widgets[i]->Show(); // megjelenítés
+            widgets[i]->Show(); // displaying
         gout << refresh;
     }
 }
 void Application::Shutdown()
 {
-    isExiting = true; // kilépés inicializálása
+    isExiting = true; // initalizing exiting
 }

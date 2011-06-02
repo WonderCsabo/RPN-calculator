@@ -23,11 +23,11 @@ void Button::Show() const
 
 void Button::HandleEvent(event ev)
 {
-    // ha a gomb fókuszálva van és ENTER-t ütünk, vagy felette bal egérgombbal kattintunk
+    // if it is focused and hit ENTER or the cursor is on it and clicked
     if ((isFocused && ev.keycode == key_enter) ||
         (MouseOver(ev.pos_x, ev.pos_y) && ev.button == btn_left))
     {
-        Action(); // hajtsuk végre az akciót
+        Action(); // execute action
     }
     if(MouseOver(ev.pos_x, ev.pos_y))
     {

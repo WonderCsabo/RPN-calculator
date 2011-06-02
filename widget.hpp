@@ -3,18 +3,18 @@
 
 #include <graphics.hpp>
 
-class Widget // grafikus vezérlõ õsosztálya
+class Widget // graphic controller class
 {
 public:
     Widget(int px, int py, int sx, int sy, bool focus = false);
-    // konstruktor pozíció, méret és fókusz alapján
-    virtual ~Widget(){} // üres destruktor
-    virtual void Show() const = 0; // megjelenítés
-    virtual void HandleEvent(genv::event ev); // eseménykezelés
-    void SetPosition(int x, int y); // pozíció beállítása
-    void SetFocus(bool focus); // fókusz beállítása
-    // lekérdezõ mûveletek:
-    bool MouseOver(int x, int y) const; // rajta van-e az egér
+    // constructor with position, size
+    virtual ~Widget(){} // empty deconstructro
+    virtual void Show() const = 0; // displaying
+    virtual void HandleEvent(genv::event ev); // event handling
+    void SetPosition(int x, int y); // setting the position
+    void SetFocus(bool focus); // setting the focus
+    // getter methods:
+    bool MouseOver(int x, int y) const; // is the mouse on the widget
     int PositionX() const { return posX; }
     int PositionY() const { return posY; }
     int Width() const { return sizeX; }

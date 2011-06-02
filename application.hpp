@@ -4,22 +4,22 @@
 #include "widget.hpp"
 #include <vector>
 
-class Application // grafikus alkalmazás
+class Application // graphics application
 {
 public:
-    Application(int sx, int sy); // méret alapján program létrehozása
+    Application(int sx, int sy); // create program with size
     ~Application();
-    void AddWidget(Widget *w); // új vezérlõ felvétele
-    void Run(); // futtatás
-    void Shutdown(); // leállítás
+    void AddWidget(Widget *w); // create new controller
+    void Run(); 
+    void Shutdown(); 
 
     int Width() const { return sizeX; }
     int Height() const { return sizeY; }
 protected:
-    std::vector<Widget*> widgets; // vezérlõk
-    int focus; // megadja, melyik vezérlõn van a fókusz
-    bool isExiting; // kilépés alatt áll-e a program
-    int sizeX, sizeY; // képernyõ méret
+    std::vector<Widget*> widgets; // controllers
+    int focus; // gives the focus' position
+    bool isExiting; // is the program exiting
+    int sizeX, sizeY; // size of screen
 };
 
 #endif // APPLICATION_HPP
