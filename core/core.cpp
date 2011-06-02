@@ -59,14 +59,22 @@ bool assoc(char op)
     }
 }
 
-deque <string> tokenize(string s)
+void tokenize(string &s, deque <string> &d, bool &bad)
 {
-    deque <string> d;
     string temp;
+
+    if(s[0] == '-')
+        s="0"+s;
 
     for(unsigned int i=0; i<s.size(); i++)
     {
-        if(!isdigit(s[i]) && s[i] != '.')
+        if(i>0 && s[i] == '-' && s[i-1] == '(')
+            s = s.substr(0,i)+"0-"+s.substr(i+1,s.length()-i-1);
+    }
+
+    for(unsigned int i=0; i<s.size(); i++)
+    {
+        if(isoperator(s[i]) || s[i] == '(' || s[i] == ')' && s[i] != '.')
         {
             if(!temp.empty())
                 d.push_back(temp);
@@ -75,13 +83,17 @@ deque <string> tokenize(string s)
             d.push_back(temp);
             temp.clear();
         }
-        else
+        else if(isdigit(s[i]) || s[i] == '.')
             temp+=s[i];
+        else
+        {
+            bad = true;
+            break;
+        }
+
     }
     if(isdigit(s[s.size()-1]) && !temp.empty())
         d.push_back(temp);
-
-    return d;
 }
 
 double evaulate(vector <double> v, string s)
@@ -111,11 +123,12 @@ int main()
     stack <string> opStack;
     string input;
     getline(cin,input);
-    deque <string> d = tokenize(input);
+    deque <string> d;
+    tokenize(input,d,bad);
 
     //converting to RPN
 
-    while(!d.empty())
+    while(!d.empty() && !bad)
     {
         if(isoperator(d.front()[0]))
         {
@@ -164,9 +177,6 @@ int main()
             rpn.push_back(d.front());
         }
 
-        if(bad)
-            break;
-
         d.pop_front();
     }
 
@@ -175,7 +185,7 @@ int main()
 
         if(opStack.top() == "(" || opStack.top() == ")")
         {
-            bad=true;
+            bad = true;
             break;
         }
 
@@ -188,8 +198,8 @@ int main()
     stack <double> valStack;
     vector <double> *tempv;
     stringstream *s;
-    int t;
-    while(!rpn.empty())
+    double t;
+    while(!rpn.empty() && !bad)
     {
         if(isoperator(rpn.front()[0]))
         {
@@ -201,7 +211,7 @@ int main()
             else
             {
                 tempv = new vector <double>;
-                for(unsigned int i=0;i<2;i++)
+                for(unsigned int i=0; i<2; i++)
                 {
                     tempv->push_back(valStack.top());
                     valStack.pop();
@@ -217,8 +227,8 @@ int main()
             s = new stringstream;
             *s<<rpn.front();
             *s>>t;
-            delete s;
             valStack.push(t);
+            delete s;
         }
 
         rpn.pop_front();
