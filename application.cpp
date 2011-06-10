@@ -1,5 +1,4 @@
 #include "application.hpp"
-
 #include <graphics.hpp>
 using namespace genv;
 
@@ -26,21 +25,19 @@ void Application::Run()
 
         if ((ev.keycode == key_tab || ev.keycode == key_right) && widgets.size() > 0) // focus is chaned with tab or key_right
             focus++;
-        if(widgets.size() > 0 && ev.keycode == key_left) // focus is chaned with key_left
+        if(widgets.size() > 0 && ev.keycode == key_left) // focus is changed with key_left
             focus--;
 
-        if(focus>2)
-            focus = 0;
         if(focus<0)
-            focus = 2;
+            focus = widgets.size()-1;
+        if(focus>widgets.size()-1)
+            focus = 0;
 
         for (unsigned int i = 0; i < widgets.size(); i++)
             widgets[i]->SetFocus(focus == i);
 
-        for (unsigned int i = 0; i < widgets.size(); i++)
-        { // controllers in the vector
+        for (unsigned int i = 0; i < widgets.size(); i++)  // controllers in the vector
             widgets[i]->HandleEvent(ev); //event handling
-        }
 
         gout << move_to(0, 0) << color(0,0,0) << box(sizeX, sizeY);
         for (unsigned int i = 0; i < widgets.size(); i++)

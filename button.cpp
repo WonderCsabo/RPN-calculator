@@ -11,8 +11,10 @@ void Button::Show() const
 {
     gout << move_to(posX, posY) << color(255,255,255) << box(sizeX, sizeY);
 
-    if (isFocused ) gout << color(0,0,100);
+    if(isClicked) gout << color(244,91,0);
+    else if (isFocused) gout << color(0,0,100);
     else if(Mouse) gout << color(255,0,0);
+
     else gout << color(0,0,50);
     gout << move_to(posX + 1, posY + 1) << box(sizeX - 2, sizeY - 2);
 
@@ -24,16 +26,17 @@ void Button::Show() const
 void Button::HandleEvent(event ev)
 {
     // if it is focused and hit ENTER or the cursor is on it and clicked
-    if ((isFocused && ev.keycode == key_enter) ||
-        (MouseOver(ev.pos_x, ev.pos_y) && ev.button == btn_left))
-    {
+    if ((isFocused && ev.keycode == key_enter) || (MouseOver(ev.pos_x, ev.pos_y) && ev.button == btn_left))
         Action(); // execute action
-    }
-    if(MouseOver(ev.pos_x, ev.pos_y))
-    {
+
+    if(MouseOver(ev.pos_x, ev.pos_y)) // if the cursor is over the button
         Mouse = true;
-    }
     else if (!MouseOver(ev.pos_x, ev.pos_y) && ev.type == ev_mouse)
         Mouse = false;
+    if(MouseOver(ev.pos_x, ev.pos_y) && ev.button == 1) // if the button is clicked
+        isClicked = true;
+    else if((ev.button == -1 || !MouseOver(ev.pos_x, ev.pos_y)) && isClicked)
+        isClicked = false;
+
 }
 

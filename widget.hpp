@@ -24,6 +24,7 @@ protected:
     int posX, posY, sizeX, sizeY;
     bool isFocused;
     bool Mouse;
+    bool isClicked;
 };
 
 
