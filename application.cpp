@@ -19,6 +19,7 @@ void Application::AddWidget(Widget *w)
 void Application::Run()
 {
    gout.open(sizeX, sizeY);
+   gin.timer(700);
     while (gin && !isExiting) // while it can accept events and not in exiting state
     {
         event ev; gin >> ev;

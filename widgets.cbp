@@ -4,7 +4,6 @@
 	<Project>
 		<Option title="GraphicsProject" />
 		<Option pch_mode="2" />
-		<Option default_target="Release" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Release">
@@ -35,39 +34,15 @@
 			<Add library="lib\libSDLmain.a" />
 			<Add directory="lib" />
 		</Linker>
-		<Unit filename="application.cpp">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="application.hpp">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="button.cpp">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="button.hpp">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="exitbutton.hpp">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="label.cpp">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="label.hpp">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="labelmodbutton.hpp">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="main.cpp">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="widget.cpp">
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="widget.hpp">
-			<Option target="Release" />
-		</Unit>
+		<Unit filename="application.cpp" />
+		<Unit filename="application.hpp" />
+		<Unit filename="button.cpp" />
+		<Unit filename="button.hpp" />
+		<Unit filename="lineeditor.cpp" />
+		<Unit filename="lineeditor.hpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="widget.cpp" />
+		<Unit filename="widget.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
