@@ -31,11 +31,11 @@ void Button::HandleEvent(event ev)
 
     if(MouseOver(ev.pos_x, ev.pos_y)) // if the cursor is over the button
         Mouse = true;
-    else if (!MouseOver(ev.pos_x, ev.pos_y) && ev.type == ev_mouse)
+    else if (ev.type == ev_mouse)
         Mouse = false;
     if(MouseOver(ev.pos_x, ev.pos_y) && ev.button == 1) // if the button is clicked
         isClicked = true;
-    else if((ev.button == -1 || !MouseOver(ev.pos_x, ev.pos_y)) && isClicked)
+    else if(ev.button == -1 && isClicked)
         isClicked = false;
 
 }

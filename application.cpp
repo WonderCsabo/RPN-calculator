@@ -25,12 +25,12 @@ void Application::Run()
 
         if ((ev.keycode == key_tab || ev.keycode == key_right) && widgets.size() > 0) // focus is chaned with tab or key_right
             focus++;
-        if(widgets.size() > 0 && ev.keycode == key_left) // focus is changed with key_left
+        else if(widgets.size() > 0 && ev.keycode == key_left) // focus is changed with key_left
             focus--;
 
         if(focus<0)
             focus = widgets.size()-1;
-        if(focus>widgets.size()-1)
+        else if(focus>widgets.size()-1)
             focus = 0;
 
         for (unsigned int i = 0; i < widgets.size(); i++)
