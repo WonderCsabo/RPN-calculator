@@ -4,7 +4,7 @@ Widget::Widget(int px, int py, int sx, int sy, bool focus)
 : posX(px), posY(py), sizeX(sx), sizeY(sy), isFocused(focus)
 { }
 
-void Widget::HandleEvent(genv::event ev)
+void Widget::HandleEvent(genv::event ev, std::string &s)
 {
     // no event handling here
 }

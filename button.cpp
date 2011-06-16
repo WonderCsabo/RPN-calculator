@@ -5,6 +5,7 @@ Button::Button(int px, int py, int sx, int sy, std::string text, bool focus)
 : Widget(px, py, sx, sy, focus)
 {
     buttonText = text;
+    isClicked = false;
 }
 
 void Button::Show() const
@@ -23,11 +24,11 @@ void Button::Show() const
          << text(buttonText);
 }
 
-void Button::HandleEvent(event ev)
+void Button::HandleEvent(event ev, std::string &s)
 {
     // if it is focused and hit ENTER or the cursor is on it and clicked
     if ((isFocused && ev.keycode == key_enter) || (MouseOver(ev.pos_x, ev.pos_y) && ev.button == btn_left))
-        Action(); // execute action
+        Action(s); // execute action
 
     if(MouseOver(ev.pos_x, ev.pos_y)) // if the cursor is over the button
         Mouse = true;
@@ -37,6 +38,19 @@ void Button::HandleEvent(event ev)
         isClicked = true;
     else if(ev.button == -1 && isClicked)
         isClicked = false;
+}
 
+void Button::Action(std::string &s)
+{
+    if(s[s.length()-1] == '!')
+        s.clear();
+    if(buttonText!="C" && buttonText!="CE" && buttonText!="sqrt" && s.length()<21)
+        s+=buttonText;
+    else if(buttonText == "C" )
+        s = s.substr(0, s.length()-1);
+    else if(buttonText == "CE")
+        s.clear();
+    else if(buttonText == "sqrt")
+        s+="^(1/2)";
 }
 

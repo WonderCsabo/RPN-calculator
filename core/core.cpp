@@ -40,10 +40,6 @@ int preced(char op)
 
     case '^' :
         return 4;
-
-    case '(' :
-    case ')' :
-        return 1;
     }
     return 0;
 }
@@ -67,13 +63,13 @@ void tokenize(string &s, deque <string> &d, bool &bad)
         s="0"+s;
 
     for(unsigned int i=0; i<s.size(); i++)
-    {
         if(i>0 && s[i] == '-' && s[i-1] == '(')
             s = s.substr(0,i)+"0-"+s.substr(i+1,s.length()-i-1);
-    }
 
     for(unsigned int i=0; i<s.size(); i++)
     {
+        if(i>0 && isoperator(s[i-1]) && s[i] == ')')
+            bad = true;
         if(isoperator(s[i]) || s[i] == '(' || s[i] == ')' && s[i] != '.')
         {
             if(!temp.empty())
@@ -178,6 +174,7 @@ int main()
         }
 
         d.pop_front();
+
     }
 
     while (!opStack.empty() && !bad)
@@ -191,6 +188,13 @@ int main()
 
         rpn.push_back(opStack.top());
         opStack.pop();
+
+//    while(!rpn.empty())
+//    {
+//        cout<<rpn.front()<<",";
+//        rpn.pop_front();
+//    }
+//    cout<<endl;
     }
 
     //evaluating the result

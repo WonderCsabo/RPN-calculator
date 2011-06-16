@@ -10,8 +10,8 @@ public:
     Application(int sx, int sy); // create program with size
     ~Application();
     void AddWidget(Widget *w); // create new controller
-    void Run(); 
-    void Shutdown(); 
+    void Run();
+    void Shutdown();
 
     int Width() const { return sizeX; }
     int Height() const { return sizeY; }
@@ -19,7 +19,8 @@ protected:
     std::vector<Widget*> widgets; // controllers
     int focus; // gives the focus' position
     bool isExiting; // is the program exiting
-    int sizeX, sizeY; // size of screen
+    int sizeX, sizeY; // size of window
+    std::string line; //string of the screen
 };
 
 #endif // APPLICATION_HPP

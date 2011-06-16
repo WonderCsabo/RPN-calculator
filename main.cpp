@@ -1,35 +1,36 @@
 #include "application.hpp"
 #include "button.hpp"
 #include "lineeditor.hpp"
+#include "enterbutton.hpp"
 
 int main()
 {
     Application app(212,239);
 
-    Widget* scr = new LineEditor(9, 15, 194, 50);
-    Widget* del = new Button(9, 72, 34, 27, "<-");
-    Widget* ce = new Button(49, 72, 34, 27, "CE");
-    Widget* c = new Button(89, 72, 34, 27, "C");
-    Widget* pm = new Button(129, 72, 34, 27, "±");
-    Widget* sqrt = new Button(169, 72, 34, 27, "√");
-    Widget* n8 = new Button(49, 104, 34, 27, "8");
-    Widget* n7 = new Button(9, 104, 34, 27, "7");
+    Widget* scr = new LineEditor(11, 10, 194, 50);
+    Widget* del = new Button(11, 72, 34, 27, "C");
+    Widget* ce = new Button(50, 72, 34, 27, "CE");
+    Widget* c = new Button(89, 72, 34, 27, "(");
+    Widget* pm = new Button(128, 72, 34, 27, ")");
+    Widget* sqrt = new Button(167, 72, 34, 27, "sqrt");
+    Widget* n7 = new Button(11, 104, 34, 27, "7");
+    Widget* n8 = new Button(50, 104, 34, 27, "8");
     Widget* n9 = new Button(89, 104, 34, 27, "9");
-    Widget* div = new Button(129, 104, 34, 27, "/");
-    Widget* mod = new Button(169, 104, 34, 27, "%");
-    Widget* n4 = new Button(9, 136, 34, 27, "4");
-    Widget* n5 = new Button(49, 136, 34, 27, "5");
+    Widget* div = new Button(128, 104, 34, 27, "/");
+    Widget* mod = new Button(167, 104, 34, 27, "%");
+    Widget* n4 = new Button(11, 136, 34, 27, "4");
+    Widget* n5 = new Button(50, 136, 34, 27, "5");
     Widget* n6 = new Button(89, 136, 34, 27, "6");
-    Widget* tim = new Button(129, 136, 34, 27, "*");
-    Widget* rec = new Button(169, 136, 34, 27, "1/x");
-    Widget* n1 = new Button(9, 168, 34, 27, "1");
-    Widget* n2 = new Button(49, 168, 34, 27, "2");
+    Widget* tim = new Button(128, 136, 34, 27, "*");
+    Widget* rec = new Button(167, 136, 34, 27, "^");
+    Widget* n1 = new Button(11, 168, 34, 27, "1");
+    Widget* n2 = new Button(50, 168, 34, 27, "2");
     Widget* n3 = new Button(89, 168, 34, 27, "3");
-    Widget* min = new Button(129, 168, 34, 27, "-");
-    Widget* eq = new Button(169, 168, 34, 59, "=");
-    Widget* n0 = new Button(9, 200, 74, 27, "0");
-    Widget* com = new Button(89, 200, 34, 27, ",");
-    Widget* plus = new Button(129, 200, 34, 27, "+");
+    Widget* min = new Button(128, 168, 34, 27, "-");
+    Widget* eq = new EnterButton(167, 168, 34, 59, "=");
+    Widget* n0 = new Button(11, 200, 74, 27, "0");
+    Widget* com = new Button(89, 200, 34, 27, ".");
+    Widget* plus = new Button(128, 200, 34, 27, "+");
 
     app.AddWidget(scr);
     app.AddWidget(del);

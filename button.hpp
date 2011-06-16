@@ -7,15 +7,18 @@
 class Button : public Widget { // controller of the button
 public:
     Button(int px, int py, int sx, int sy, std::string text, bool focus = false);
+    virtual ~Button(){}
     void Show() const;
-    void HandleEvent(genv::event ev); // event handling
+    virtual void HandleEvent(genv::event ev, std::string &s); // event handling
     void SetText(std::string text);
 
     std::string Text() const { return buttonText; }
 protected:
-    virtual void Action() {} // event handling, maybe hidden
+    virtual void Action(std::string &s); // event handling, maybe hidden
 
     std::string buttonText;
+    bool Mouse;
+    bool isClicked;
 };
 
 
