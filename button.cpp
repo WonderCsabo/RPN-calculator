@@ -1,3 +1,5 @@
+/**Object for the buttons, except the calc button; drawing, event handling.**/
+
 #include "button.hpp"
 using namespace genv;
 
@@ -8,27 +10,73 @@ Button::Button(int px, int py, int sx, int sy, std::string text, bool focus)
     isClicked = false;
 }
 
-void Button::Show() const
+int Button::Type()
 {
-    gout << move_to(posX, posY) << color(255,255,255) << box(sizeX, sizeY);
+    int t=0;
+    switch (buttonText[0])
+    {
+        case 'C':
+        case '(':
+        case ')':
+        case 's':
+        case '/':
+        case '*':
+        case '-':
+        case '+':
+        case '%':
+        case '^':
+            t=2;
+            break;
+        case '0':
+            t=3;
+            break;
+        case '=':
+            t=4;
+            break;
+        default:
+            t=5;
+            break;
+    }
+    if(Mouse)
+        return t+4;
+    else
+        return t;
+}
 
-    if(isClicked) gout << color(244,91,0);
-    else if (isFocused) gout << color(0,0,100);
-    else if(Mouse) gout << color(255,0,0);
+void Button::Show(std::vector<std::vector<std::vector<Color> > > &images)
+{
+        Image::DrawImage(posX,posY,Button::Type(),images); //draw the button
 
-    else gout << color(0,0,50);
-    gout << move_to(posX + 1, posY + 1) << box(sizeX - 2, sizeY - 2);
+        if(isFocused || isClicked) // draw the nice dotted frame
+        {
+            for(int i=0;i<sizeX-8;i+=2)
+            {
+                gout<<move_to(posX+i+4,posY+4)<<color(0,0,0)<<dot<<
+                      move_to(posX+i+4,posY+sizeY-4)<<color(0,0,0)<<dot;
+            }
+            if(sizeX==34)
+            gout<<move_to(posX+sizeX-4,posY+4)<<color(0,0,0)<<dot<<
+                  move_to(posX+sizeX-4,posY+sizeY-4)<<color(0,0,0)<<dot;
 
-    gout << color(255,255,255)
+            for(int i=0;i<sizeY-8;i+=2)
+            {
+                gout<<move_to(posX+4,posY+i+4)<<color(0,0,0)<<dot<<
+                      move_to(posX+sizeX-4,posY+i+4)<<color(0,0,0)<<dot;
+            }
+        }
+
+    gout << color(0,0,0) //drawing the label
          << move_to(posX + sizeX / 2 - gout.twidth(buttonText) / 2, posY + sizeY / 2 + 6)
          << text(buttonText);
 }
 
 void Button::HandleEvent(event ev, std::string &s)
 {
-    // if it is focused and hit ENTER or the cursor is on it and clicked
-    if ((isFocused && ev.keycode == key_enter) || (MouseOver(ev.pos_x, ev.pos_y) && ev.button == btn_left))
+    // if it is focused and hit SPACE or the cursor is on it and clicked
+    if ((isFocused && ev.keycode == key_space) || (MouseOver(ev.pos_x, ev.pos_y) && ev.button == btn_left))
         Action(s); // execute action
+    else if(ev.keycode == key_enter && buttonText == "=")
+        Action(s);
 
     if(MouseOver(ev.pos_x, ev.pos_y)) // if the cursor is over the button
         Mouse = true;
@@ -42,15 +90,14 @@ void Button::HandleEvent(event ev, std::string &s)
 
 void Button::Action(std::string &s)
 {
-    if(s[s.length()-1] == '!')
+    if(s[s.length()-1] == '!') // we got a result, start the string from scratch
         s.clear();
-    if(buttonText!="C" && buttonText!="CE" && buttonText!="sqrt" && s.length()<21)
+    if(buttonText!="C" && buttonText!="CE" && buttonText!="sqrt" && s.length()<21) //adding a number/operator
         s+=buttonText;
-    else if(buttonText == "C" )
-        s = s.substr(0, s.length()-1);
+    else if(buttonText == "C" ) //delete on char
+        s = s.substr(0, s.length()-1); //delete the whole string
     else if(buttonText == "CE")
         s.clear();
     else if(buttonText == "sqrt")
         s+="^(1/2)";
 }
-

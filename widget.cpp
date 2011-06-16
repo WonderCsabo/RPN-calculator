@@ -1,3 +1,4 @@
+/**The root for the controllers, only getter and setter methods inherited from it.**/
 #include "widget.hpp"
 
 Widget::Widget(int px, int py, int sx, int sy, bool focus)
@@ -8,7 +9,7 @@ void Widget::HandleEvent(genv::event ev, std::string &s)
 {
     // no event handling here
 }
-bool Widget::MouseOver(int x, int y) const
+bool Widget::MouseOver(int x, int y) const // if the controller is hovered
 {
     return (posX <= x && x <= posX + sizeX && posY <= y && y <= posY + sizeY);
 }
