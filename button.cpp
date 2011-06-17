@@ -52,19 +52,15 @@ void Button::Show(std::vector<std::vector<std::vector<Color> > > &images)
         if(isFocused) // draw the nice dotted frame
         {
             for(int i=0;i<sizeX-8;i+=2)
-            {
                 gout<<move_to(posX+i+4,posY+4)<<color(0,0,0)<<dot<<
                       move_to(posX+i+4,posY+sizeY-4)<<color(0,0,0)<<dot;
-            }
             if(sizeX==34)
             gout<<move_to(posX+sizeX-4,posY+4)<<color(0,0,0)<<dot<<
                   move_to(posX+sizeX-4,posY+sizeY-4)<<color(0,0,0)<<dot;
 
             for(int i=0;i<sizeY-8;i+=2)
-            {
                 gout<<move_to(posX+4,posY+i+4)<<color(0,0,0)<<dot<<
                       move_to(posX+sizeX-4,posY+i+4)<<color(0,0,0)<<dot;
-            }
         }
 
     gout << color(0,0,0) //drawing the label

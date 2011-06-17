@@ -20,7 +20,6 @@ bool Core::isOperator(char c)
     }
 }
 
-
 int Core::Preced(char op)
 {
     switch(op)
@@ -198,9 +197,7 @@ Core::Core(string input)
         }
 
         else // If the token is a number, then add it to the output queue
-        {
             rpn.push_back(d.front());
-        }
 
         d.pop_front(); //pop the read token
     }
@@ -220,12 +217,9 @@ Core::Core(string input)
     }
 }
 
-//evaluating the result
-
-string Core::GetResult()
+string Core::GetResult() //evaluating the result
 {
     stack <double> valStack; //stack for evaulated values
-    double t; //temp for converting
     stringstream *s; //temp for converting
 
     while(!rpn.empty() && !bad) // While there are input tokens left
@@ -254,6 +248,7 @@ string Core::GetResult()
         }
         else //otherwise it's a number: push it onto the value stack
         {
+            double t; //temp for converting
             s = new stringstream;
             *s<<rpn.front();
             *s>>t;

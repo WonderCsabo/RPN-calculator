@@ -13,14 +13,11 @@ void LineEditor::Show(std::vector<std::vector<std::vector<Color> > > &images)
 {
     Image::DrawImage(posX,posY,1,images); //drawing the screen's background
 
-    // determining the rendered text part
-    string currentText = lineText;
-    if (isFocused && isUnderscore) currentText += "_";
-    while (currentText.length() * 8 > sizeX - 4)
-        currentText = currentText.substr(1, currentText.length() - 1);
-
-    gout << move_to(posX + sizeX - gout.twidth(lineText+"_") -10, posY + 27) << color(0,0,0) << text(currentText);
-    //drawing the text of the screen
+    gout << move_to(posX + sizeX - gout.twidth(lineText+"_") -10, posY + 27) << color(0,0,0);
+    if(isFocused && isUnderscore) //drawing the text of the screen
+        gout<<text(lineText+"_");
+    else
+        gout<<text(lineText);
 }
 
 void LineEditor::HandleEvent(event ev, string &s)
@@ -30,7 +27,7 @@ void LineEditor::HandleEvent(event ev, string &s)
     else
         lineText = s;
 
-     // if the char is legal, add it
+    // if the char is legal, add it
     if (((ev.keycode >= 40 && ev.keycode <= 43) || (ev.keycode >= 45 && ev.keycode <= 57) || ev.keycode == 94) && lineText.length()<21 && s[s.length()-1] != '!')
         lineText += ev.keycode;
 

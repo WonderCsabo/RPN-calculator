@@ -23,7 +23,6 @@ private:
 public:
     Core(string input); //constructor, also the infix to postfix converter
     string GetResult(); // evauletes the result of the postfix expression
-
 };
 
 

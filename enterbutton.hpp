@@ -3,9 +3,10 @@
 
 #include "button.hpp"
 
-class EnterButton : public Button { // controller of the button
+class EnterButton : public Button   // controller of the button
+{
 public:
-    EnterButton(int px, int py, int sx, int sy, std::string text, bool focus = false) : Button(px, py, sx, sy, text, focus){}
+    EnterButton(int px, int py, int sx, int sy, std::string text, bool focus = false) : Button(px, py, sx, sy, text, focus) {}
 
 protected:
     virtual void Action(std::string &s); // event handling
