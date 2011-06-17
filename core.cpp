@@ -75,7 +75,7 @@ void Core::Tokenize(string input)
 
     for(unsigned int i=0; i<input.size(); i++)
     {
-        if((!isdigit(input[i-1]) && input[i-1]!=')') && input[i] == ')') //somehow the algorith cant handle this error, fix it here for now
+        if(((!isdigit(input[i-1]) && input[i-1]!=')') && input[i] == ')') || (input[i]=='(' && i != 0 && !isOperator(input[i-1]))) //somehow the algorith cant handle this error, fix it here for now
         {
             bad = true;
             break;
