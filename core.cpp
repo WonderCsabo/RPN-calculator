@@ -57,26 +57,11 @@ void Core::Tokenize(string input)
 
     for(unsigned int i=0; i<input.size(); i++)
     {
-        if(input[i] == '-' && (input[i-1] == '(' || i==0)) //interpreting negation operator as (0-number)
+        if(input[i] == '-' && (input[i-1] == '(' || i==0)) //interpreting negation operator as (0-1)*number
+            input = input.substr(0,i)+"(0-1)*"+input.substr(i+1,input.length()-i);
+        if(((!isdigit(input[i-1]) && input[i-1]!=')') && input[i] == ')') || (input[i]=='(' && i != 0 && !isOperator(input[i-1]) && input[i-1] !='('))
         {
-            unsigned int t=0;
-            for(unsigned int j=i+1; j<input.length(); j++)
-            {
-                t=j;
-                if(!isdigit(input[j]) && input[j] != '.')
-                    break;
-            }
-            if(t<input.length()-1 || (t == input.length()-1 && input[t]==')'))
-                input = input.substr(0,i)+"(0-"+input.substr(i+1,t-i-1)+")"+input.substr(t,input.length()-t);
-            else
-                input="0"+input;
-        }
-    }
-    for(unsigned int i=0; i<input.size(); i++)
-    {
-        if(((!isdigit(input[i-1]) && input[i-1]!=')') && input[i] == ')') || (input[i]=='(' && i != 0 && !isOperator(input[i-1]) && input[i-1] !='(')) //somehow the algorith cant handle this error, fix it here for now
-        {
-            bad = true;
+            bad = true;  //somehow the algorith cant handle this error, fix it here for now
             break;
         }
         if(isOperator(input[i]) || input[i] == '(' || input[i] == ')')
@@ -201,8 +186,8 @@ Core::Core(string input)
                     lpar = true;
                     break;
                 }
-                    rpn.push_back(opStack.top());
-                    opStack.pop();
+                rpn.push_back(opStack.top());
+                opStack.pop();
             }
 
             if(!lpar) // If the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
@@ -219,7 +204,7 @@ Core::Core(string input)
 
         d.pop_front(); //pop the read token
     }
-     // When there are no more tokens to read:
+    // When there are no more tokens to read:
     // While there are still operator tokens in the stack:
     while (!opStack.empty() && !bad)
     {
