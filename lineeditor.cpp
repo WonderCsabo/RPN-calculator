@@ -40,8 +40,13 @@ void LineEditor::HandleEvent(event ev, string &s)
         lineText += ev.keycode;
         s.clear();
     }
-    if (ev.keycode == key_backspace) // deleting with backspace
+    if (ev.keycode == key_backspace && s[s.length()-1] != '!') // deleting with backspace
         lineText = lineText.substr(0, lineText.length()-1);
+    else if(ev.keycode == key_backspace)
+    {
+        s.clear();
+        lineText.clear();
+    }
 
     if(s[s.length()-1] != '!')
         s=lineText;

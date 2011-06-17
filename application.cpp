@@ -49,7 +49,11 @@ Application::Application(int x, int y): sizeX(x), sizeY(y)
     v.push_back("fbutton_m.kep");
     v.push_back("0button_m.kep");
     v.push_back("hbutton_m.kep");
-    v.push_back("nbutton_m.kep");
+    v.push_back("fbutton_m.kep");
+    v.push_back("fbutton_c.kep");
+    v.push_back("0button_c.kep");
+    v.push_back("hbutton_c.kep");
+    v.push_back("fbutton_c.kep");
 
     img = new Image(v); // image loader/drawer object
 }

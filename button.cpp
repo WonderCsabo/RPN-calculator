@@ -37,7 +37,9 @@ int Button::Type()
             t=5;
             break;
     }
-    if(Mouse)
+    if(isClicked)
+        return t+8;
+    else if(Mouse)
         return t+4;
     else
         return t;
@@ -47,7 +49,7 @@ void Button::Show(std::vector<std::vector<std::vector<Color> > > &images)
 {
         Image::DrawImage(posX,posY,Button::Type(),images); //draw the button
 
-        if(isFocused || isClicked) // draw the nice dotted frame
+        if(isFocused) // draw the nice dotted frame
         {
             for(int i=0;i<sizeX-8;i+=2)
             {

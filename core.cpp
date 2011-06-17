@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include "core.hpp"
-#include <iostream>
 using namespace std;
 
 bool Core::isOperator(char c)
@@ -67,14 +66,16 @@ void Core::Tokenize(string input)
                 if(!isdigit(input[j]) && input[j] != '.')
                     break;
             }
-            if(t<input.length()-1)
+            if(t<input.length()-1 || (t == input.length()-1 && input[t]==')'))
                 input = input.substr(0,i)+"(0-"+input.substr(i+1,t-i-1)+")"+input.substr(t,input.length()-t);
             else
                 input="0"+input;
-
         }
+    }
 
-        if(!isdigit(input[i-1]) && input[i] == ')') //somehow the algorith cant handle this error, fix it here for now
+    for(unsigned int i=0; i<input.size(); i++)
+    {
+        if((!isdigit(input[i-1]) && input[i-1]!=')') && input[i] == ')') //somehow the algorith cant handle this error, fix it here for now
         {
             bad = true;
             break;
@@ -105,7 +106,6 @@ void Core::Tokenize(string input)
             bad = true;
             break;
         }
-
     }
 
     if(!temp.empty() && isdigit(input[input.size()-1]) && !bad) //adding the last char

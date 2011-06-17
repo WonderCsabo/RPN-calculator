@@ -1,7 +1,6 @@
 /**Object for the button which fires calc. Inherits everything expect the calc firing.**/
 
 #include "enterbutton.hpp"
-#include <iostream>
 #include "core.hpp"
 
 void EnterButton::Action(std::string &s)
