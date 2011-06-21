@@ -3,8 +3,7 @@
 
 int main()
 {
-    Application *app = new Application(212,239);
-    app->Run();
-    delete app;
+    Application app(212,239);
+    app.Run();
     return 0;
 }

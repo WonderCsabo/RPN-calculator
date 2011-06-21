@@ -259,7 +259,7 @@ string Core::GetResult() //evaluating the result
         rpn.pop_front(); // the token is read, read the next
     }
 
-    if(((valStack.size() > 1 || valStack.empty()) && bad) || bad) // if not one value remained
+    if(valStack.size() > 1 || valStack.empty()) // if not one value remained
         return "hibas kifejezes"; //error
     else if(bad && valStack.top() == 1)
         return "osztas nullaval"; //division by zero
@@ -267,6 +267,9 @@ string Core::GetResult() //evaluating the result
         return "MOD es nem egesz szam"; //modulus with non-integer
     else if(bad && valStack.top() == 3)
         return "paros gyok, alap < 0"; //complex result of sqrt
+    else if(bad) // if not one value remained
+        return "hibas kifejezes"; //error
+
 
     else // if it's okay, return the result
     {
