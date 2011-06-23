@@ -249,8 +249,7 @@ string Core::GetResult() //evaluating the result
         else //otherwise it's a number: push it onto the value stack
         {
             double t; //temp for converting
-            s = new stringstream;
-            *s<<rpn.front();
+            s = new stringstream(rpn.front());
             *s>>t;
             valStack.push(t);
             delete s;

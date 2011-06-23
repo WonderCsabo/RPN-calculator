@@ -27,26 +27,20 @@ void LineEditor::HandleEvent(event ev, string &s)
     else
         lineText = s;
 
-    // if the char is legal, add it
-    if (((ev.keycode >= 40 && ev.keycode <= 43) || (ev.keycode >= 45 && ev.keycode <= 57) || ev.keycode == 94) && lineText.length()<21 && s[s.length()-1] != '!')
-        lineText += ev.keycode;
+    if ((((ev.keycode >= 40 && ev.keycode <= 43) || (ev.keycode >= 45 && ev.keycode <= 57) || ev.keycode == 94) && lineText.length()<21) || ev.keycode == key_backspace)
+    {   //if the char is legal or backspace
+        if(s[s.length()-1] == '!') // if we got a result already
+        {
+            lineText.clear();
+            s.clear();
+        }
+        if(ev.keycode != key_backspace) //adding characters
+            lineText += ev.keycode;
+        else // deleting with backspace
+            lineText = lineText.substr(0, lineText.length()-1);
 
-    else if(((ev.keycode >= 40 && ev.keycode <= 43) || (ev.keycode >= 45 && ev.keycode <= 57) || ev.keycode == 94) && lineText.length()<21 && s[s.length()-1] == '!')
-    {
-        lineText.clear();
-        lineText += ev.keycode;
-        s.clear();
-    }
-    if (ev.keycode == key_backspace && s[s.length()-1] != '!') // deleting with backspace
-        lineText = lineText.substr(0, lineText.length()-1);
-    else if(ev.keycode == key_backspace)
-    {
-        s.clear();
-        lineText.clear();
-    }
-
-    if(s[s.length()-1] != '!')
         s=lineText;
+    }
 
     if(ev.type == ev_timer && !isUnderscore && s[s.length()-1] != '!') //flashing underscore
         isUnderscore = true;
