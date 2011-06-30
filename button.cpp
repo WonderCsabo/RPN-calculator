@@ -12,17 +12,31 @@ Button::Button(int px, int py, int sx, int sy, std::string text, bool focus)
 
 int Button::Type()
 {
-    int t;
-
-    if(isdigit(buttonText[0]) && buttonText != "0")
-        t=5;
-    else if(buttonText == "0")
-        t=3;
-    else if(buttonText == "=")
-        t=4;
-    else
-        t=2;
-
+    int t=0;
+    switch (buttonText[0])
+    {
+        case 'C':
+        case '(':
+        case ')':
+        case 's':
+        case '/':
+        case '*':
+        case '-':
+        case '+':
+        case '%':
+        case '^':
+            t=2;
+            break;
+        case '0':
+            t=3;
+            break;
+        case '=':
+            t=4;
+            break;
+        default:
+            t=5;
+            break;
+    }
     if(isClicked)
         return t+8;
     else if(Mouse)
@@ -30,7 +44,6 @@ int Button::Type()
     else
         return t;
 }
-
 void Button::Show(std::vector<std::vector<std::vector<Color> > > &images)
 {
         Image::DrawImage(posX,posY,Button::Type(),images); //draw the button
