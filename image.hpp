@@ -11,8 +11,11 @@ private:
 
 public:
     Image(std::vector<std::string> filenames); // constructor, loads the images from files
-    std::vector<std::vector<std::vector<Color> > > imgs; //vector of the images
-    static void DrawImage(int x, int y, int type, std::vector<std::vector<std::vector<Color> > > &images); //draws the specific image
+
+    static void DrawImage(int x, int y, int type); //draws the specific image
+
+private:
+    static std::vector<std::vector<std::vector<Color> > > imgs; //vector of the images
 };
 
 #endif // IMAGE_HPP_INCLUDED

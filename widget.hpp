@@ -11,11 +11,10 @@ public:
     Widget(int px, int py, int sx, int sy, bool focus = false);
     // constructor with position, size
     virtual ~Widget(){} // empty deconstructor
-    virtual void Show(std::vector<std::vector<std::vector<Color> > > &images) = 0; // displaying
+    virtual void Show() = 0; // displaying
     virtual void HandleEvent(genv::event ev, std::string &s); // event handling
     void SetPosition(int x, int y); // setting the position
     void SetFocus(bool focus); // setting the focus
-    virtual void Action(std::string &s){}
     // getter methods:
     bool MouseOver(int x, int y) const; // is the mouse on the widget
     int PositionX() const { return posX; }
@@ -24,6 +23,7 @@ public:
     int Height() const { return sizeY; }
     bool Focus() const { return isFocused; }
 protected:
+    virtual void Action(std::string &s){}
     int posX, posY, sizeX, sizeY;
     bool isFocused;
 };

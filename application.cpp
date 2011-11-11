@@ -69,7 +69,7 @@ Application::~Application()
 void Application::Run()
 {
     gout.open(sizeX, sizeY); //open a new graphic window
-    img->DrawImage(0,0,0,img->imgs); //draw the background
+    img->DrawImage(0,0,0); //draw the background
     gin.timer(700); //tick in every 700ms
     while (gin && !isExiting) // while it can accept events and not in exiting state
     {
@@ -85,17 +85,17 @@ void Application::Run()
 
         if(focus<0) //jump from last to first and vica versa
             focus = widgets.size()-1;
-        else if(focus>widgets.size()-1)
+        else if(focus>int(widgets.size()-1))
             focus = 0;
 
         for (unsigned int i = 0; i < widgets.size(); i++)
-            widgets[i]->SetFocus(focus == i);
+            widgets[i]->SetFocus(focus == int(i));
 
         for (unsigned int i = 0; i < widgets.size(); i++)  // controllers in the vector
             widgets[i]->HandleEvent(ev, line); //event handling
 
         for (unsigned int i = 0; i < widgets.size(); i++)
-            widgets[i]->Show(img->imgs); // displaying
+            widgets[i]->Show(); // displaying
         gout << refresh; // refreshing the screen
     }
 }

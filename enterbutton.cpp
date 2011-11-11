@@ -1,4 +1,4 @@
-/**Object for the button which fires calc. Inherits everything expect the calc firing.**/
+/**Class for the button which fires calc. Inherits everything expect the calc firing.**/
 
 #include "enterbutton.hpp"
 #include "core.hpp"

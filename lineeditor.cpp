@@ -9,9 +9,9 @@ LineEditor::LineEditor(int px, int py, int sx, int sy, bool focus)
     lineText = "";
 }
 
-void LineEditor::Show(std::vector<std::vector<std::vector<Color> > > &images)
+void LineEditor::Show()
 {
-    Image::DrawImage(posX,posY,1,images); //drawing the screen's background
+    Image::DrawImage(posX,posY,1); //drawing the screen's background
 
     gout << move_to(posX + sizeX - gout.twidth(lineText+"_") -10, posY + 27) << color(0,0,0);
     if(isFocused && isUnderscore) //drawing the text of the screen

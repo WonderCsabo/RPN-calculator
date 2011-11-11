@@ -6,6 +6,8 @@
 using namespace genv;
 using namespace std;
 
+std::vector<std::vector<std::vector<Color> > > Image::imgs;
+
 Image::Image(vector<string> filenames)
 {
     vector<vector<Color> > v; //temp matrix for the actual image
@@ -31,12 +33,12 @@ Image::Image(vector<string> filenames)
     }
 }
 
-void Image::DrawImage(int x, int y, int type, std::vector<std::vector<std::vector<Color> > > &images)
+void Image::DrawImage(int x, int y, int type)
 {
-    for (unsigned int i = 0; i < images[type].size(); i++)
-        for (unsigned int j = 0; j < images[type][i].size(); j++)
+    for (unsigned int i = 0; i < imgs[type].size(); i++)
+        for (unsigned int j = 0; j < imgs[type][i].size(); j++)
             gout << move_to(j+x, i+y) // transpose the matrix
-            << color(images[type][i][j].R, images[type][i][j].G, images[type][i][j].B)
+            << color(imgs[type][i][j].R, imgs[type][i][j].G, imgs[type][i][j].B)
             << dot;
     // drawing the actual pixel
 }

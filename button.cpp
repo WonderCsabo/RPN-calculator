@@ -1,4 +1,4 @@
-/**Object for the buttons, except the calc button; drawing, event handling.**/
+/**Class for the buttons, except the calc button; drawing, event handling.**/
 
 #include "button.hpp"
 using namespace genv;
@@ -44,9 +44,9 @@ int Button::Type()
     else
         return t;
 }
-void Button::Show(std::vector<std::vector<std::vector<Color> > > &images)
+void Button::Show()
 {
-        Image::DrawImage(posX,posY,Button::Type(),images); //draw the button
+        Image::DrawImage(posX,posY,Button::Type()); //draw the button
 
         if(isFocused) // draw the nice dotted frame
         {

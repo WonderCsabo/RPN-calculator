@@ -8,7 +8,7 @@ class Button : public Widget { // controller of the button
 public:
     Button(int px, int py, int sx, int sy, std::string text, bool focus = false);
     virtual ~Button(){}
-    void Show(std::vector<std::vector<std::vector<Color> > > &images);
+    virtual void Show();
     virtual void HandleEvent(genv::event ev, std::string &s); // event handling
     void SetText(std::string text);
     std::string Text() const { return buttonText; }
