@@ -8,11 +8,8 @@
 using namespace genv;
 using namespace std;
 
-Application::Application(int x, int y): sizeX(x), sizeY(y)
+Application::Application(int x, int y): sizeX(x), sizeY(y), focus(0)
 {
-    isExiting = false;
-    focus = 0;
-
     // adding the controllers
     widgets.push_back(new LineEditor(11, 10, 194, 50)); //screen
     widgets.push_back(new Button(11, 72, 34, 27, "C"));
@@ -71,13 +68,11 @@ void Application::Run()
     gout.open(sizeX, sizeY); //open a new graphic window
     img->DrawImage(0,0,0); //draw the background
     gin.timer(700); //tick in every 700ms
-    while (gin && !isExiting) // while it can accept events and not in exiting state
+    event ev; //event variable
+    while (gin >> ev) // while it can accept events and not in exiting state
     {
-        event ev; //event variable
-        gin >> ev; //getting events
-
         if(ev.keycode == key_escape)
-            Shutdown();
+            break;
         else if ((ev.keycode == key_tab || ev.keycode == key_right) && widgets.size() > 0) // focus is chaned with tab or key_right
             focus++;
         else if(widgets.size() > 0 && ev.keycode == key_left) // focus is changed with key_left
@@ -89,17 +84,12 @@ void Application::Run()
             focus = 0;
 
         for (unsigned int i = 0; i < widgets.size(); i++)
+        {
             widgets[i]->SetFocus(focus == int(i));
-
-        for (unsigned int i = 0; i < widgets.size(); i++)  // controllers in the vector
             widgets[i]->HandleEvent(ev, line); //event handling
-
-        for (unsigned int i = 0; i < widgets.size(); i++)
             widgets[i]->Show(); // displaying
+        }
+
         gout << refresh; // refreshing the screen
     }
-}
-void Application::Shutdown()
-{
-    isExiting = true; // initalizing exiting
 }

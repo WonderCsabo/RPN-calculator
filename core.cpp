@@ -139,10 +139,9 @@ double Core::Evaulate(vector <double> v, string s)
     return 0;
 }
 
-Core::Core(string input)
+Core::Core(string input) : bad(false)
 {
     stack <string> opStack; //stack for operators
-    bad = false;
     bool lpar = false;
     Tokenize(input); //tokenizing the input
 
@@ -220,7 +219,6 @@ Core::Core(string input)
 string Core::GetResult() //evaluating the result
 {
     stack <double> valStack; //stack for evaulated values
-    stringstream *s; //temp for converting
 
     while(!rpn.empty() && !bad) // While there are input tokens left
     {
@@ -234,25 +232,23 @@ string Core::GetResult() //evaluating the result
             else
             {
                 //evaulating the last two vaules; the swap them to the result
-                vector <double> *tempv = new vector <double>;
+                vector <double> tempv;
                 for(unsigned int i=0; i<2; i++)
                 {
-                    tempv->push_back(valStack.top());
+                    tempv.push_back(valStack.top());
                     valStack.pop();
                 }
 
-                valStack.push(Evaulate(*tempv, rpn.front()));
-                delete tempv;
+                valStack.push(Evaulate(tempv, rpn.front()));
             }
 
         }
         else //otherwise it's a number: push it onto the value stack
         {
             double t; //temp for converting
-            s = new stringstream(rpn.front());
-            *s>>t;
+            stringstream s(rpn.front());
+            s>>t;
             valStack.push(t);
-            delete s;
         }
 
         rpn.pop_front(); // the token is read, read the next
@@ -272,10 +268,8 @@ string Core::GetResult() //evaluating the result
 
     else // if it's okay, return the result
     {
-        s = new stringstream;
-        *s<<valStack.top();
-        string temp = s->str();
-        delete s;
-        return temp;
+        stringstream s;
+        s<<valStack.top();
+        return s.str();
     }
 }

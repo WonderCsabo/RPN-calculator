@@ -1,4 +1,4 @@
-/**Main, just starting the program with deterimined window size.**/
+/**Main, just starting the program with determined window size.**/
 #include "application.hpp"
 
 int main()

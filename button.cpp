@@ -4,11 +4,7 @@
 using namespace genv;
 
 Button::Button(int px, int py, int sx, int sy, std::string text, bool focus)
-: Widget(px, py, sx, sy, focus)
-{
-    buttonText = text;
-    isClicked = false;
-}
+: Widget(px, py, sx, sy, focus), buttonText(text), isClicked(false) {}
 
 int Button::Type()
 {
