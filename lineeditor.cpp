@@ -4,10 +4,7 @@ using namespace genv;
 using namespace std;
 
 LineEditor::LineEditor(int px, int py, int sx, int sy, bool focus)
-    : Widget(px, py, sx, sy, focus)
-{
-    lineText = "";
-}
+    : Widget(px, py, sx, sy, focus), lineText("") {}
 
 void LineEditor::Show()
 {
@@ -22,8 +19,11 @@ void LineEditor::Show()
 
 void LineEditor::HandleEvent(event ev, string &s)
 {
-    if(s[s.length()-1] == '!') // if we got a result already
-        lineText = s.substr(0, s.length()-1);
+    if(s[s.length()-1] == '!')
+    {
+        // if we got a result already
+        s = lineText = s.substr(0, s.length()-1);
+    }
     else
         lineText = s;
 
