@@ -19,11 +19,8 @@ void LineEditor::Show()
 
 void LineEditor::HandleEvent(event ev, string &s)
 {
-    if(s[s.length()-1] == '!')
-    {
-        // if we got a result already
+    if(s[s.length()-1] == '!') // if we got a result already
         s = lineText = s.substr(0, s.length()-1);
-    }
     else
         lineText = s;
 
